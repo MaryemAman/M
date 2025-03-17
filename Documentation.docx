@@ -1,0 +1,97 @@
+# Cloud Engineering Pathway Assessment
+
+## Overview
+
+This guide provides step-by-step instructions to build, run, and test a containerized 3-tier application (frontend, backend, and database) using Docker and Docker Compose.
+
+## Prerequisites
+
+Ensure the following are installed:
+
+- Docker
+- Docker Compose
+- Node.js (for development/debugging)
+
+## Setup
+
+1. **Clone the Repository**
+   ```sh
+   git clone <repository-url>
+   cd <repository-folder>
+   ```
+2. **Build & Run Containers**
+   ```sh
+   docker-compose up -d
+   ```
+   *(Run twice if needed for proper startup.)*
+
+   **Stop Containers:** `docker-compose down`
+   **Check Running Containers:** `docker ps`
+
+## Network & Security
+
+- **Network:** Docker bridge network (`app-network`)
+- **Ports:**
+  - Frontend: `3000:3000`
+  - Backend: `5000:5000`
+  - Database: `27017:27017`
+- **Security:** MongoDB authentication is disabled. Secure credentials if enabled.
+
+## Testing
+
+Run the test script:
+
+```sh
+./test.sh
+```
+
+Checks:
+
+- Running containers
+- API connectivity (`http://localhost:5000/api/todos`)
+- MongoDB connectivity
+- Frontend accessibility (`http://localhost:3000`)
+
+## Troubleshooting
+
+### 1. Containers Not Starting
+
+```sh
+docker-compose down && docker-compose up -d
+```
+
+Check logs:
+
+```sh
+docker logs <container_id>
+```
+
+### 2. MongoDB Issues
+
+Check if MongoDB is running:
+
+```sh
+docker ps | grep mongo
+```
+
+Test connection:
+
+```sh
+docker exec -it $(docker ps -qf "name=mongo") mongosh --eval "db.runCommand({ping: 1})"
+```
+
+### 3. Inaccessible Frontend/Backend
+
+Verify ports:
+
+```sh
+docker ps
+```
+
+Check logs:
+
+```sh
+docker logs <frontend_container_id>
+docker logs <backend_container_id>
+```
+
